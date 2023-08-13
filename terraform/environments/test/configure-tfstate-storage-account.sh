@@ -1,5 +1,5 @@
-#!/bin/bash
-RESOURCE_GROUP_NAME="Azuredevops"
+#az login!/bin/bash
+RESOURCE_GROUP_NAME="Azuredev"
 STORAGE_ACCOUNT_NAME="tfstate$RANDOM$RANDOM"
 CONTAINER_NAME="tfstate"
 
