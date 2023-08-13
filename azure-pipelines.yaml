@@ -13,7 +13,7 @@ pool: UdacityDevOps2AgentPool
 variables:
   python.version: '3.7.6'
   # ToDo: Replace the service connection name as used in the DevOps project settings
-  azureServiceConnectionId: 'QualityProject3ServConn'
+  azureServiceConnectionId: 'Project3UdacityServConnNew'
   # Project root folder. Point to the folder containing manage.py file.
   projectRoot: $(System.DefaultWorkingDirectory)
   # Environment name
