@@ -35,8 +35,6 @@ stages:
       displayName: 'Terrafom installation'
       inputs:
         terraformVersion: '1.3.9'
-        terraformDownloadLocation: 'https://releases.hashicorp.com/terraform'
-
     
     # Run Terraform Init on the pipeline agent 
     # ToDo: Replace the resource group name, storage account name, and container name below
