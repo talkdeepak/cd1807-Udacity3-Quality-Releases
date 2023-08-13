@@ -47,9 +47,9 @@ stages:
         command: 'init'
         workingDirectory: '$(System.DefaultWorkingDirectory)/terraform/environments/test'
         backendServiceArm: '$(azureServiceConnectionId)'
-        backendAzureRmResourceGroupName: 'DeepakRG'
-        backendAzureRmStorageAccountName: 'storagearora'
-        backendAzureRmContainerName: 'deepakcontainer'
+        backendAzureRmResourceGroupName: 'Azuredev'
+        backendAzureRmStorageAccountName: 'tfstate30907257'
+        backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'test.terraform.tfstate'
 
     - task: TerraformTaskV3@3
