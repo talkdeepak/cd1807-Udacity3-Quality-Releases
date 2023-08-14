@@ -169,7 +169,7 @@ stages:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter/fakerestapi' 
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
     # JMeter Test Suite - Publish    
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
       displayName: 'Upload Fake Rest API Package'
@@ -177,17 +177,17 @@ stages:
 
     #--------------------------------------------#  
     # # JMeter (Performance) Test Suite - Archive
-    # - task: ArchiveFiles@2
-    #   displayName: 'Archive PerformanceTestSuite'
-    #   inputs:
-    #     rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter'
-    #     includeRootFolder: false
-    #     archiveType: 'zip'
-    #     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
-    # # JMeter Test Suite - Publish    
-    # - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip
-    #   displayName: 'Upload JMeter Package'
-    #   artifact: drop-perftests
+    - task: ArchiveFiles@2
+      displayName: 'Archive PerformanceTestSuite'
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/jmeter'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip'
+    # JMeter Test Suite - Publish    
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-perftests.zip
+      displayName: 'Upload JMeter Package'
+      artifact: drop-perftests
 
           
 #--------------------------------------------#  
@@ -223,12 +223,10 @@ stages:
                 mkdir -p testing/jmeter
 
                 unzip -o $(Build.BuildId)-perftests.zip -d testing/jmeter
-
-                # Endurance test
+               
                 mkdir -p log/endurance
                 ./apache-jmeter-5.5/bin/jmeter -n -t testing/jmeter/EnduranceTest.jmx -l EnduranceTestResult.csv -e -f -o log/endurance -j log/endurance/endurance-test.log
 
-                # Stress test
                 mkdir -p log/stress
                 ./apache-jmeter-5.5/bin/jmeter -n -t testing/jmeter/StressTest.jmx -l StressTestResult.csv -e -f -o log/stress -j log/stress/stress-test.log
                 
