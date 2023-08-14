@@ -96,6 +96,11 @@ stages:
     # Postman - Install Newman    
     # ToDo: Update the command and verify the working directory
     - task: CmdLine@2
+      displayName: Install npm
+      inputs:
+        script: 'sudo apt-get -y install npm'
+        workingDirectory: $(System.DefaultWorkingDirectory)
+    - task: CmdLine@2
       displayName: Install Newman
       inputs:
         script: 'sudo npm install -g newman'
