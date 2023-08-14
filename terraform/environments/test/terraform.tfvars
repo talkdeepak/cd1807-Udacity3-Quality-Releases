@@ -7,6 +7,7 @@ tenant_id       = "96f38caf-cd18-452d-8458-c29ba6ed4656"
 # Resource Group/Location
 location            = "East US"
 resource_group_name = "Azuredev"
+resource_group      = "Azuredev"
 application_type    = "Udacity3App"
 
 # Network
