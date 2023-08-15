@@ -1,0 +1,215 @@
+{
+	"info": {
+		"_postman_id": "0f4bce1d-6911-4473-a93f-6719603df314",
+		"name": "Data_Validation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3423376"
+	},
+	"item": [
+		{
+			"name": "Get all products validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Body contains products list\", function () {\r",
+							"    pm.expect(jsonData).to.have.property(\"products\");\r",
+							"});\r",
+							"pm.test(\"Products list contains object with id\", function () {\r",
+							"    pm.expect(jsonData.products[0]).to.have.property(\"id\");\r",
+							"});\r",
+							"pm.test(\"Product with id=1 has brand Apple\", function() {\r",
+							"    pm.expect(jsonData.products[0].brand).to.eql(\"Apple\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}{{product_url}}",
+					"host": [
+						"{{url}}{{product_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a product validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Created product title check\", function () {\r",
+							"    pm.expect(jsonData.title).to.eql(\"Test product x\");\r",
+							"});\r",
+							"pm.test(\"Created product price check\", function () {\r",
+							"    pm.expect(jsonData.price).to.eql(\"25\");\r",
+							"});\r",
+							"pm.test(\"Created product description check\", function () {\r",
+							"    pm.expect(jsonData.description).to.eql(\"This is a test product for Udacity\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 101,\r\n    \"title\": \"Test product x\",\r\n    \"price\": \"25\",\r\n    \"description\": \"This is a test product for Udacity\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}{{product_url}}/{{post_url}}",
+					"host": [
+						"{{url}}{{product_url}}"
+					],
+					"path": [
+						"{{post_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get specific product by ID validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Check if id exists\", function () {\r",
+							"    pm.expect(jsonData).to.have.property(\"id\");\r",
+							"});\r",
+							"pm.test(\"Check if id=2\", function () {\r",
+							"    pm.expect(jsonData.id).to.eql(2);\r",
+							"});\r",
+							"pm.test(\"Check if title exists\", function () {\r",
+							"    pm.expect(jsonData).to.have.property(\"title\");\r",
+							"});\r",
+							"pm.test(\"Check if title is iPhone X\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.title).to.eql(\"iPhone X\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}{{product_url}}/2",
+					"host": [
+						"{{url}}{{product_url}}"
+					],
+					"path": [
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update product data validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Title updated to Udacity\", function () {\r",
+							"    pm.expect(jsonData.title).to.eql(\"Udacity\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Brand updated to Microsoft\", function () {\r",
+							"    pm.expect(jsonData.brand).to.eql(\"Microsoft\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Udacity\",\r\n    \"brand\": \"Microsoft\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}{{product_url}}/6",
+					"host": [
+						"{{url}}{{product_url}}"
+					],
+					"path": [
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a product by UD validation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"isDeleted value is true\", function () {\r",
+							"    pm.expect(jsonData.isDeleted).to.eql(true);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"deletedOn exists\", function () {\r",
+							"    pm.expect(jsonData).to.have.property(\"deletedOn\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}{{product_url}}/7",
+					"host": [
+						"{{url}}{{product_url}}"
+					],
+					"path": [
+						"7"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
