@@ -140,15 +140,11 @@ stages:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium'
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip'
     # Selenium Test Suite - Publish the package  
-    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip   # Same as the archiveFile artifact above. 
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip   # Same as the archiveFile artifact above. 
       displayName: 'Upload Selenium Package'
       artifact: drop-uitests
-      
-    - publish: '$(System.DefaultWorkingDirectory)/automatedtesting/selenium/login.py'
-      displayName: 'Upload UI Test Suite1'
-      artifact: ui-test   
 
     #--------------------------------------------#    
     # FakeRestAPI - Archive
@@ -245,38 +241,45 @@ stages:
       name:   QualityReleasesProject3
       resourceType: VirtualMachine
     strategy:
-        runOnce:
-          deploy:
-            steps:
-            - bash: |
-                sudo apt update
-                sudo apt install software-properties-common -y
-                sudo apt-add-repository ppa:universe -y
-                sudo apt-get update
-                sudo apt-get install zip unzip -y
-                sudo apt-get install -y chromium-browser
-                sudo apt-get install -y chromium-chromedriver
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop-uitests
+            
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |           
+                #! /bin/bash  
+
+                sudo apt-get upgrade -y
                 sudo apt-get install python3-pip -y
-                sudo python3 -m pip install --upgrade pip
-                sudo wget https://files.pythonhosted.org/packages/ed/9c/9030520bf6ff0b4c98988448a93c04fcbd5b13cd9520074d8ed53569ccfe/selenium-3.141.0.tar.gz
-                sudo tar -zxvf selenium-3.141.0.tar.gz
-                cd selenium-3.141.0/
-                sudo python3 setup.py install
-                sudo python3 -c "import selenium; print('Selenium Version:', selenium.__version__)"
-                cd $(Pipeline.Workspace)/selenium
-                find . -type f ! -name 'selenium-$(Build.BuildId).zip' -delete 
-                unzip -o $(Pipeline.Workspace)/selenium/selenium-$(Build.BuildId) -d .
-                sudo mkdir -p /var/logs/selenium && sudo chmod 664 /var/logs/selenium
-                #sudo python3 -u login.py 2>&1 | sudo tee -a /var/logs/selenium/ui_tests.log
-                sudo python3 -u login.py | sudo dd of=/var/logs/selenium/ui_tests.log
-                cd $(System.DefaultWorkingDirectory)
-                mkdir -p logs/selenium
-                sudo cp /var/logs/selenium/ui_tests.log logs/selenium/ui_tests.log
-                sudo chmod 775 logs/selenium/ui_tests.log
-                cat logs/selenium/ui_tests.log
-              displayName: Execute UI functional tests using Selenium
-            - task: PublishPipelineArtifact@1
-              displayName: Publish logs from Selenium tests
-              inputs:
-                targetPath: '$(System.DefaultWorkingDirectory)/logs/selenium/ui_tests.log'
-                artifactName: 'selenium-logs-atf'
+                sudo apt-get install unzip -y
+                sudo apt-get install -y chromium-browser
+                pip3 install selenium
+                cd ~/
+                DIR=/home/adminuser/app
+                if [ ! -d "$DIR" ]; then
+                    mkdir app
+                fi
+                mv $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip app
+                cd app
+                ls
+                echo "inside app path"
+                ls
+                unzip -o $(Build.BuildId)-uitests.zip
+                FILE=/home/adminuser/app/chromedriver_linux64.zip
+                if [ ! -f "$FILE" ]; then
+                    LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+                    wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip
+                    unzip -o chromedriver_linux64.zip
+                    sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
+                fi
+                export PATH=$PATH:/home/adminuser/app/chromedriver
+                echo "inside Chrome path"
+                ls
+                echo "Starting Selenium Tests"
+                ls
+                python3 login.py | tee -a selenium.log
+                echo "Completed Selenium Tests. Check selenium.log for results."
