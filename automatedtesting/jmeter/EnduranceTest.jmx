@@ -56,7 +56,7 @@
           </elementProp>
           <stringProp name="HTTPSampler.domain">${url}</stringProp>
           <stringProp name="HTTPSampler.port"></stringProp>
-          <stringProp name="HTTPSampler.protocol">https</stringProp>
+          <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
           <stringProp name="HTTPSampler.path">${path}</stringProp>
           <stringProp name="HTTPSampler.method">GET</stringProp>
@@ -103,7 +103,7 @@
               <connectTime>true</connectTime>
             </value>
           </objProp>
-          <stringProp name="filename">C:\Users\marte\OneDrive\Desktop\kraam\Udacity\nd082-project3\automatedtesting\jmeter\EnduranceTestResult.csv</stringProp>
+          <stringProp name="filename">C:\UdacityDevOps3\cd1807-Udacity3-Quality-Releases\automatedtesting\jmeter\EnduranceTestResult.csv</stringProp>
         </ResultCollector>
         <hashTree/>
         <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
