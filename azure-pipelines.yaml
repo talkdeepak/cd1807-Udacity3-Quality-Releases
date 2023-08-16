@@ -265,6 +265,8 @@ stages:
                 fi
                 mv /home/adminuser/azagent/_work/1/drop-uitests/$(Build.BuildId)-uitests.zip app
                 cd app
+                echo "inside app path"
+                ls
                 unzip -o $(Build.BuildId)-uitests.zip
                 FILE=/home/adminuser/app/chromedriver_linux64.zip
                 if [ ! -f "$FILE" ]; then
@@ -274,6 +276,9 @@ stages:
                     sudo ln -s $PWD/chromedriver /usr/local/bin/chromedriver
                 fi
                 export PATH=$PATH:/home/adminuser/app/chromedriver
+                echo "inside Chrome path"
+                ls
                 echo "Starting Selenium Tests"
-                python3 login.py | tee -a selenium.log
+                echo ls
+                python3 selenium/login.py | tee -a selenium.log
                 echo "Completed Selenium Tests. Check selenium.log for results."
