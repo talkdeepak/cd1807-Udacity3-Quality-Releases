@@ -266,7 +266,7 @@ stages:
                 mv $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-uitests.zip app
                 cd app
                 ls
-                echo "inside app path"
+                echo "inside app path for checking"
                 ls
                 unzip -o $(Build.BuildId)-uitests.zip
                 FILE=/home/adminuser/app/chromedriver_linux64.zip
